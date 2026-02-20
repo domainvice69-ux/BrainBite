@@ -2,14 +2,14 @@ name: Fetch Daily News
 on:
    schedule: 
    - cron: "0 8 * * *"
-    workflow_dispatch:
+   workflow_dispatch:
     jobs:
     fetch-news:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
     uses: actions/checkout@v4
-    - name: Setup Node
+   - name: Setup Node
     uses: actions/setup-node@v4
      with:
      node-version: "18"
