@@ -1,37 +1,25 @@
-name: Fetch Daily News
-
-on: 
-schedule:
-# Runs at 08:00 UTC every day
-- cron: '0 8 * * *'
-  workflow_dispatch: {} 
-
- jobs:
- fetch-and-store:
- runs-on: ubuntu-latest
-
- steps:
- - name: Checkout Repository
-  uses: actions/checkout@v4
-
-  - name: Setup Node.js 18
-  uses: actions/setup-node@v4
-  with:
-   node-version: '18'
-   cache: 'npm'
-   cache-dependency-path: worker/package-lock.json
-
-   - name: Install Dependencies
-   working-directory: ./worker
-   run: npm ci || npm install 
-
-   - name: Execute News Worker 
-   working-directory: ./worker
-   env:
-    # Secret must contain the full Service Account JSON content
+name: Fetch Daily News 
+on:
+   schedule: 
+   - cron: "0 8 * * *"
+    workflow_dispatch:
+    jobs:
+    fetch-news:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+    uses: actions/checkout@v4
+    - name: Setup Node
+    uses: actions/setup-node@v4
+     with:
+     node-version: "18"
+     - name: Install
+     run: |
+     cd worker
+     npm install
+     - name: Execute
+     env:
      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-   
-   
- 
-
-    
+     run: |
+      cd worker 
+      node fetchNews.js
